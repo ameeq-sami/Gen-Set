@@ -19,6 +19,7 @@ class Set{
     ~Set();
     void display() const;
 
+    bool contain(setType val )const;
     Set<setType> Union(const Set<setType> &other) const;
     Set<setType> intersection(const Set<setType> &other) const;
 

@@ -1,3 +1,4 @@
+// #include "sets.h"
 template <class setType>
 void Set<setType>::setSize(int s)
 {
@@ -13,7 +14,6 @@ bool Set<setType>::setSetIndex(setType val, int index)
         {
             return 0;
         }
-        
     }
     arr[index] = val;
     return true;
@@ -35,7 +35,7 @@ template <class setType>
 Set<setType>::Set(int s)
 {
     setSize(s);
-    arr = new setType[getSize()]; 
+    arr = new setType[getSize()];
 }
 
 template <class setType>
@@ -48,60 +48,80 @@ Set<setType>::Set(const Set &other)
     {
         setSetIndex(other.getSetIndex(i), i);
     }
-    
-
 }
 
 template <class setType>
 Set<setType>::~Set()
 {
-    delete[] arr; 
+    delete[] arr;
 }
 
 template <class setType>
 void Set<setType>::display() const
 {
-    cout<<"{ ";
+    cout << "{ ";
     for (int i = 0; i < getSize(); i++)
     {
-        cout<<getSetIndex(i);
+        cout << getSetIndex(i);
 
-        if (i != getSize() - 1 )
+        if (i != getSize() - 1)
         {
-            cout<<", ";
+            cout << ", ";
         }
-        else cout<<" }"<<endl;
-        
+        else
+            cout << " }" << endl;
     }
-    
+}
+
+template <class setType>
+bool Set<setType>::contain(setType val) const
+{
+    for (int i = 0; i < getSize(); i++)
+    {
+        if (val == getSetIndex(i))
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 template <class setType>
 Set<setType> Set<setType>::Union(const Set<setType> &other) const
 {
-    int temp = 0;
-    Set<setType> s(getSize() + other.getSize());
-    for (int i = 0; i < s.getSize(); i++)
+    int newArrSize = 0; // to count lenght of unioned array for obj that will be return
+    setType *arr = new setType[getSize() + other.getSize()];
+    for (int i = 0; i < getSize() + other.getSize() ; i++)
     {
         if (i < getSize())
         {
-            s.setSetIndex(getSetIndex(i), i);
+            arr[newArrSize] = getSetIndex(i);
+            newArrSize++;
         }
-        else{
-        s.setSetIndex(other.getSetIndex(temp), i);
-        temp++;}
+        else
+        {
+            if (!contain(other.getSetIndex(i - getSize()))){
+                arr[newArrSize] = other.getSetIndex(i - getSize());
+                newArrSize++;
+            }
+        }
     }
     
-    
+    Set<setType> s(newArrSize);
+    for (int i = 0; i < s.getSize(); i++)
+    {
+        s.setSetIndex(arr[i], i);
+    }
+
     return s;
 }
 
 template <class setType>
 Set<setType> Set<setType>::intersection(const Set<setType> &other) const
 {
-    setType  *temp = new setType [getSize() + other.getSize()];
-    int tempSize = 0 ;
-    for (int i = 0; i < getSize() ; i++)
+    setType *temp = new setType[getSize() + other.getSize()];
+    int tempSize = 0;
+    for (int i = 0; i < getSize(); i++)
     {
         for (int j = 0; j < other.getSize(); j++)
         {
@@ -110,19 +130,14 @@ Set<setType> Set<setType>::intersection(const Set<setType> &other) const
                 temp[tempSize] = getSetIndex(i);
                 tempSize++;
             }
-            
         }
-        
     }
     Set<setType> s(tempSize);
     for (int i = 0; i < s.getSize(); i++)
     {
-        s.setSetIndex(temp[i],i);
+        s.setSetIndex(temp[i], i);
     }
 
     delete[] temp;
     return s;
-    
-    
 }
-
