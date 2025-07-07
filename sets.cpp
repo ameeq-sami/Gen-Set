@@ -1,3 +1,4 @@
+#include "sets.h"
 // #include "sets.h"
 template <class setType>
 void Set<setType>::setSize(int s)
@@ -57,20 +58,53 @@ Set<setType>::~Set()
 }
 
 template <class setType>
+void Set<setType>::updateSize(int s)
+{
+    setType *tArr;
+    if (s < getSize())
+    {
+        tArr = new setType[s];
+        for (int i = 0; i < s; i++)
+        {
+            tArr[i] = getSetIndex(i);
+        }
+        
+
+        setSize(s);
+        delete[] arr;
+        arr = new setType[getSize()];
+
+        for (int i = 0; i < getSize(); i++)
+        {
+            setSetIndex(tArr[i],i);
+        }
+        delete[] tArr;
+    
+    }
+    else
+    {
+        setSize(s);
+        delete[] arr;
+        arr = new setType[getSize()];
+    }
+    
+}
+
+template <class setType>
 void Set<setType>::display() const
 {
     cout << "{ ";
     for (int i = 0; i < getSize(); i++)
     {
-        cout << getSetIndex(i);
+        cout << this->getSetIndex(i);
 
         if (i != getSize() - 1)
         {
             cout << ", ";
         }
-        else
-            cout << " }" << endl;
     }
+    
+    cout << " }" << endl;
 }
 
 template <class setType>
@@ -112,7 +146,7 @@ Set<setType> Set<setType>::Union(const Set<setType> &other) const
     {
         s.setSetIndex(arr[i], i);
     }
-
+    delete[] arr;
     return s;
 }
 
@@ -140,4 +174,46 @@ Set<setType> Set<setType>::intersection(const Set<setType> &other) const
 
     delete[] temp;
     return s;
+}
+
+template <class setType>
+Set<setType> Set<setType>::diffrence(const Set<setType> &other) const
+{
+    setType *temp;
+    int tempSize = 0;
+    temp = new setType[getSize()];
+
+    for (int i = 0; i < getSize() ; i++)
+    {
+        if (!other.contain(getSetIndex(i)))
+        {
+            temp[tempSize] = getSetIndex(i);
+            tempSize++;
+        }
+    }
+    Set<setType> s(tempSize);
+    for (int i = 0; i < s.getSize(); i++)
+    {
+        s.setSetIndex(temp[i], i);
+    }
+    
+    delete[] temp;
+    return s;
+}
+
+template <class setType>
+bool Set<setType>::isSubSet(const Set<setType> &other) const
+{
+    bool flag = 0;
+    for (int i = 0; i < getSize(); i++)
+    {
+        if (!other.contain(getSetIndex(i)))
+        {
+            flag = 1 ;
+        }
+    }
+    if (flag == 1)  return false;
+
+    return true;
+
 }

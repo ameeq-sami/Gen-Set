@@ -17,11 +17,14 @@ class Set{
     Set(int s);
     Set(const Set &a);
     ~Set();
+    void updateSize(int s);
     void display() const;
 
     bool contain(setType val )const;
     Set<setType> Union(const Set<setType> &other) const;
     Set<setType> intersection(const Set<setType> &other) const;
+    Set<setType> diffrence(const Set<setType> &other) const;
+    bool isSubSet(const Set<setType> &other) const;
 
 };
 
