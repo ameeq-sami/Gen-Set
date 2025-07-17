@@ -17,7 +17,7 @@ class Set{
     Set(int s);
     Set(const Set &a);
     ~Set();
-    void updateSize(int s);
+    void updateSize(int s, string str);
     void display() const;
 
     bool contain(setType val )const;

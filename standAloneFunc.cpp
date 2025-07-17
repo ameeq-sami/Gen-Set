@@ -3,24 +3,24 @@ template <class setType>
 void input_Set(Set<setType> &set)
 {
     setType input;
-    int size = 0;    // size with dublicates
+    int size ;    // size with dublicates
     int newsize = 0; // size without duplicates
     cout << "Enter Size of Set: " << endl;
     cin >> size;
-    set.updateSize(size);
-    for (int i = 0; i < set.getSize(); i++) // taking input for set 1
+    set.updateSize(size, "update");
+    for (int i = 0; i < set.getSize(); i++) // taking input for set
     {
         cout << "Enter " << i << "th element of set: " << endl;
         cin >> ws >> input;
+        set.setSetIndex(input, i);
         if (set.setSetIndex(input, newsize))
         {
             newsize++;
         }
     }
-
     if (newsize < set.getSize()) // update size after filtering duplicates
     {
-        set.updateSize(newsize);
+        set.updateSize(newsize, "removeDub");
     }
 }
 void menu()
@@ -32,7 +32,7 @@ void menu()
 
     int choice;
     char sub_choice;
-    bool int_inputLocked = 0, char_inputLocked = 0;
+    bool int_inputFlag = 0, char_inputFlag = 0;
     while (1)
     {
         cout << "----- Set Operations Menu -----" << endl;
@@ -49,37 +49,27 @@ void menu()
 
         if (choice == 1)
         {
-
             cout << "----You selected: Input Sets----\n";
             cout << "Press a for integer set: " << endl;
             cout << "Press b for character set: " << endl;
             cin >> sub_choice;
             if (sub_choice == 'a') // for interget set
             {
-                if (int_inputLocked == 0)
-                {
                     cout << "-- Enter Elements of Set 1 --" << endl;
                     input_Set(Int_set1);
                     cout << "-- Enter Elements of Set 2 --" << endl;
                     input_Set(Int_set2);
-                    int_inputLocked = 1;
-                }
-                else {cout << "Integer Set Input Is locked, you can input sets only one time"<<endl;}
+                    int_inputFlag = 1;
                                 
             }
             else if (sub_choice == 'b') // for character set
             {
-                if (char_inputLocked == 0)
-                {
                     cout << "-- Enter Elements of Set 1 --" << endl;
                     input_Set(char_set1);
                     cout << "-- Enter Elements of Set 2 --" << endl;
                     input_Set(char_set2);
-                    char_inputLocked = 1;
-                }
-                else
-                {cout << "Character Set Input Is locked, you can input sets only one time"<<endl;}
-
+                    char_inputFlag = 1;
+    
             }
         }
         else if (choice == 2)
@@ -88,14 +78,14 @@ void menu()
             cout << "Press a for integer set: " << endl;
             cout << "Press b for character set: " << endl;
             cin >> sub_choice;
-            if (sub_choice == 'a' && int_inputLocked == 1)
+            if (sub_choice == 'a' && int_inputFlag == 1) 
             {
                 cout << "Set 1:" << endl;
                 Int_set1.display();
                 cout << "Set 2:" << endl;
                 Int_set2.display();
             }
-            else if (sub_choice == 'b' && char_inputLocked == 1)
+            else if (sub_choice == 'b' && char_inputFlag == 1)
             {
                 cout << "Set 1:" << endl;
                 char_set1.display();
@@ -116,12 +106,12 @@ void menu()
             cout << "Press a for integer set: " << endl;
             cout << "Press b for character set: " << endl;
             cin >> sub_choice;
-            if (sub_choice == 'a' && int_inputLocked == 1)
+            if (sub_choice == 'a' && int_inputFlag == 1)
             {
                 cout << "Union:   ";
                 Int_set1.Union(Int_set2).display();
             }
-            else if (sub_choice == 'b' && char_inputLocked == 1)
+            else if (sub_choice == 'b' && char_inputFlag == 1)
             {
                 cout << "Union:   ";
                 char_set1.Union(char_set2).display();
@@ -140,12 +130,12 @@ void menu()
             cout << "Press a for integer set: " << endl;
             cout << "Press b for character set: " << endl;
             cin >> sub_choice;
-            if (sub_choice == 'a' && int_inputLocked == 1)
+            if (sub_choice == 'a' && int_inputFlag == 1)
             {
                 cout << "Intersection:   ";
                 Int_set1.intersection(Int_set2).display();
             }
-            else if (sub_choice == 'b' && char_inputLocked == 1)
+            else if (sub_choice == 'b' && char_inputFlag == 1)
             {
                 cout << "Intersection:   ";
                 char_set1.intersection(char_set2).display();
@@ -164,12 +154,12 @@ void menu()
             cout << "Press a for integer set: " << endl;
             cout << "Press b for character set: " << endl;
             cin >> sub_choice;
-            if (sub_choice == 'a' && int_inputLocked == 1)
+            if (sub_choice == 'a' && int_inputFlag == 1)
             {
                 cout << "Diffrence:   ";
                 Int_set1.diffrence(Int_set2).display();
             }
-            else if (sub_choice == 'b' && char_inputLocked == 1)
+            else if (sub_choice == 'b' && char_inputFlag == 1)
             {
                 cout << "Difference:   ";
                 char_set1.diffrence(char_set2).display();
@@ -188,12 +178,12 @@ void menu()
             cout << "Press a for integer set: " << endl;
             cout << "Press b for character set: " << endl;
             cin >> sub_choice;
-            if (sub_choice == 'a' && int_inputLocked == 1)
+            if (sub_choice == 'a' && int_inputFlag == 1)
             {
                 cout << "Diffrence:   ";
                 Int_set2.diffrence(Int_set1).display();
             }
-            else if (sub_choice == 'b' && char_inputLocked == 1)
+            else if (sub_choice == 'b' && char_inputFlag == 1)
             {
                 cout << "Difference:   ";
                 char_set2.diffrence(char_set1).display();
@@ -212,7 +202,7 @@ void menu()
             cout << "Press a for integer set: " << endl;
             cout << "Press b for character set: " << endl;
             cin >> sub_choice;
-            if (sub_choice == 'a' && int_inputLocked == 1)
+            if (sub_choice == 'a' && int_inputFlag == 1)
             {
                 cout << "Is Set1 Subset of Set 2:   ";
                 if (Int_set1.isSubSet(Int_set2))
@@ -226,7 +216,7 @@ void menu()
                 else
                     cout << "No" << endl;
             }
-            else if (sub_choice == 'b' && char_inputLocked == 1)
+            else if (sub_choice == 'b' && char_inputFlag == 1)
             {
                 cout << "Is Set1 Subset of Set 2:   ";
                 if (char_set1.isSubSet(char_set2))
